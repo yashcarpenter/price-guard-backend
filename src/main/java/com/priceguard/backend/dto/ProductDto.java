@@ -1,4 +1,4 @@
-package com.priceguard.dto;
+package com.priceguard.backend.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 public class ProductDto {
     private String url;
     private String productName;
-    private String limitPrice;
+    private double limitPrice;
+    private String userEmail;
 }

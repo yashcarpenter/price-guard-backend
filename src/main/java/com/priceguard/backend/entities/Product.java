@@ -1,8 +1,6 @@
-package com.priceguard.entities;
+package com.priceguard.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,8 +17,8 @@ public class Product {
     @Column (name = "product_name")
     private String productName;
 
-    @Column(name = "user_email")
-    private User userEmail;
+    @Column (name = "user_email")
+    private String userEmail;
 
     @Column(name = "min_price")
     private double minPrice;

@@ -1,8 +1,6 @@
-package com.priceguard.entities;
+package com.priceguard.backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,11 @@ import lombok.NoArgsConstructor;
 @Entity
 public class User {
     @Id
-    @Column(name = "user_name", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "user_name")
     private String userName;
 
     @Column(name = "name")
@@ -28,6 +30,3 @@ public class User {
     @Column(name = "password")
     private String password;
 }
-
-
-

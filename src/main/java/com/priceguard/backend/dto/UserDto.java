@@ -1,4 +1,4 @@
-package com.priceguard.dto;
+package com.priceguard.backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
