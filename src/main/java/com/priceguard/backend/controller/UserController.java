@@ -64,7 +64,7 @@ public class UserController {
 
     @PostMapping("/updatePassword")
     public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> requestBody) {
-        String newPassword = requestBody.get("newEmail");
+        String newPassword = requestBody.get("newPassword");
         String email = requestBody.get("email");
         Optional<User> foundUser = userRepository.findByEmail(email);
         User newUser = foundUser.get();
@@ -82,7 +82,7 @@ public class UserController {
         return ResponseEntity.ok(userRepository.save(newUser));
     }
 
-    @PostMapping("/updateMobileNumber")
+    @PostMapping("/updateUserName")
     public ResponseEntity<?> updateUserName(@RequestBody Map<String, String> requestBody) {
         String newUserName = requestBody.get("newUserName");
         String email = requestBody.get("email");

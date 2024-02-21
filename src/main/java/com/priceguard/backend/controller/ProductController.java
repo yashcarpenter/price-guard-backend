@@ -5,6 +5,7 @@ import com.priceguard.backend.Services.ProductService;
 import com.priceguard.backend.dto.ProductDto;
 import com.priceguard.backend.entities.Product;
 import com.priceguard.backend.repository.ProductRepository;
+import com.priceguard.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class ProductController {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/getall")
     public ResponseEntity<List<Product>> getAllProducts() {
@@ -54,10 +58,11 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/{productId}")
-    public ResponseEntity<Void> removeProduct(@PathVariable String url) {
-        productService.removeProduct(url);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PostMapping("/delete/{email}")
+    public ResponseEntity<?> updateEmail(@RequestParam String url, @PathVariable String email) {
+        Product product = productRepository.findByUserEmailAndProductUrl(email,url);
+        productRepository.delete(product);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

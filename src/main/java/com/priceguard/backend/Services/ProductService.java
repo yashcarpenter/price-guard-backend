@@ -50,4 +50,9 @@ public class ProductService {
         return null;
     }
 
+    public void deleteProduct(String userEmail, String productUrl){
+        Product product = productRepository.findByUserEmailAndProductUrl(userEmail, productUrl);
+        productRepository.delete(product);
+    }
+
 }

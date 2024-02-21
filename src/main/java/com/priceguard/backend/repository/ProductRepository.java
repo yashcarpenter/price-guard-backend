@@ -9,5 +9,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     public List<Product> findByUserEmail(String userEmail);
 
+    public Product findByUserEmailAndProductUrl(String userEmail,String productUrl);
+
 }
 
