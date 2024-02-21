@@ -9,14 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+
 //    @Autowired
 //    private PasswordEncoder passwordEncoder; // Assuming you have a PasswordEncoder bean configured
     @Autowired
     private UserRepository userRepository;
+
+    @GetMapping("/getall")
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserDto userDto) {
@@ -44,9 +52,44 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getall")
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    @PostMapping("/updateEmail")
+    public ResponseEntity<?> updateEmail(@RequestBody Map<String, String> requestBody) {
+        String newEmail = requestBody.get("newEmail");
+        String email = requestBody.get("email");
+        Optional<User> foundUser = userRepository.findByEmail(email);
+        User newUser = foundUser.get();
+        newUser.setEmail(newEmail);
+        return ResponseEntity.ok(userRepository.save(newUser));
+    }
+
+    @PostMapping("/updatePassword")
+    public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> requestBody) {
+        String newPassword = requestBody.get("newEmail");
+        String email = requestBody.get("email");
+        Optional<User> foundUser = userRepository.findByEmail(email);
+        User newUser = foundUser.get();
+        newUser.setPassword(newPassword);
+        return ResponseEntity.ok(userRepository.save(newUser));
+    }
+
+    @PostMapping("/updateMobileNumber")
+    public ResponseEntity<?> updateMobileNumber(@RequestBody Map<String, String> requestBody) {
+        String newMobileNumber = requestBody.get("newMobileNumber");
+        String email = requestBody.get("email");
+        Optional<User> foundUser = userRepository.findByEmail(email);
+        User newUser = foundUser.get();
+        newUser.setMobileNumber(newMobileNumber);
+        return ResponseEntity.ok(userRepository.save(newUser));
+    }
+
+    @PostMapping("/updateMobileNumber")
+    public ResponseEntity<?> updateUserName(@RequestBody Map<String, String> requestBody) {
+        String newUserName = requestBody.get("newUserName");
+        String email = requestBody.get("email");
+        Optional<User> foundUser = userRepository.findByEmail(email);
+        User newUser = foundUser.get();
+        newUser.setUserName(newUserName);
+        return ResponseEntity.ok(userRepository.save(newUser));
     }
 
 }
