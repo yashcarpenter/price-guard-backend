@@ -30,7 +30,6 @@ public class ProductService {
             product.setProductUrl(productDto.getUrl());
             product.setProductName(productDto.getProductName());
             product.setLimitPrice(productDto.getLimitPrice());
-            product.setUserEmail(productDto.getUserEmail());
             product.setMinPrice(500);
             return productRepository.save(product);
         }

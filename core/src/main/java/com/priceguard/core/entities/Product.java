@@ -17,9 +17,6 @@ public class Product {
     @Column (name = "product_name")
     private String productName;
 
-    @Column (name = "user_email")
-    private String userEmail;
-
     @Column(name = "min_price")
     private double minPrice;
 
