@@ -1,5 +1,6 @@
 package com.priceguard.core.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Product {
     @Id
-    @Column(name = "product_url")
+    @Column(name = "product_url", unique = true)
     private String productUrl;
 
     @Column (name = "product_name")
@@ -25,5 +26,6 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "user_name", referencedColumnName = "user_name")
+    @JsonIgnore
     private User user;
 }

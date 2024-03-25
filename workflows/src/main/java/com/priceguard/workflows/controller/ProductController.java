@@ -1,6 +1,7 @@
 package com.priceguard.workflows.controller;
 
 import com.priceguard.core.entities.Product;
+import com.priceguard.core.entities.User;
 import com.priceguard.core.repository.ProductRepository;
 import com.priceguard.core.repository.UserRepository;
 import com.priceguard.workflows.dto.ProductDto;
@@ -10,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/product")
@@ -32,13 +35,13 @@ public class ProductController {
     }
 
     @PostMapping("/{userEmail}")
-    public ResponseEntity<List<Product>> getProductsByUserName(@PathVariable String userEmail) {
-        List<Product> products = productRepository.findByUserEmail(userEmail);
-        if (!products.isEmpty()) {
-            return new ResponseEntity<>(products, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(products, HttpStatus.OK);
-        }
+    public List<Product> getProductsByUserName(@PathVariable String userEmail) {
+        List<Product> products = new ArrayList<>();
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        if(user.isPresent()){
+            products = user.get().getProducts();
+            return products;
+        } else return products;
     }
 
     @PostMapping("/add")
