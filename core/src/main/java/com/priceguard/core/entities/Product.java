@@ -1,7 +1,8 @@
 package com.priceguard.core.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,20 +13,16 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Product {
     @Id
-    @Column(name = "product_url", unique = true)
-    private String productUrl;
+    @Column(name = "url")
+    private String url;
 
-    @Column (name = "product_name")
-    private String productName;
+    @Column(name="min_price")
+    private Double minPrice;
 
-    @Column(name = "min_price")
-    private double minPrice;
+    @Column(name="last_price")
+    private Double lastPrice;
 
-    @Column(name="limit_price")
-    private double limitPrice;
-
-    @ManyToOne
-    @JoinColumn(name = "user_name", referencedColumnName = "user_name")
-    @JsonIgnore
-    private User user;
+    public Product(String url) {
+        this.url = url;
+    }
 }

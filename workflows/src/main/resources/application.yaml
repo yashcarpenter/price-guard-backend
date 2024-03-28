@@ -2,7 +2,7 @@ server:
   port: 8081
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/MajorProject
+    url: jdbc:mysql://localhost:3306/price_guard_db
     username: root
     password: Password
     driverClassName: com.mysql.cj.jdbc.Driver

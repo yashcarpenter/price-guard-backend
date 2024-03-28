@@ -1,10 +1,11 @@
 package com.priceguard.workflows.controller;
 
-import com.priceguard.core.entities.Product;
+import com.priceguard.core.entities.UserProducts;
 import com.priceguard.core.entities.User;
-import com.priceguard.core.repository.ProductRepository;
+import com.priceguard.core.repository.UserProductRepository;
 import com.priceguard.core.repository.UserRepository;
-import com.priceguard.workflows.dto.ProductDto;
+import com.priceguard.workflows.dto.RequestProductDto;
+import com.priceguard.workflows.dto.ResponseProductDto;
 import com.priceguard.workflows.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,38 +24,35 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
-    private ProductRepository productRepository;
+    private UserProductRepository userProductRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @GetMapping("/getall")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        return new ResponseEntity<>(products, HttpStatus.OK);
+    public ResponseEntity<List<UserProducts>> getAllProducts() {
+        List<UserProducts> userProducts = productService.getAllProducts();
+        return new ResponseEntity<>(userProducts, HttpStatus.OK);
     }
 
     @PostMapping("/{userEmail}")
-    public List<Product> getProductsByUserName(@PathVariable String userEmail) {
-        List<Product> products = new ArrayList<>();
-        Optional<User> user = userRepository.findByEmail(userEmail);
-        if(user.isPresent()){
-            products = user.get().getProducts();
-            return products;
-        } else return products;
+    public List<ResponseProductDto> getProductsByUserEmail(@PathVariable String userEmail) {
+        return productService.getProductDataOfUserByEmail(userEmail);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Product> addProduct(@RequestBody ProductDto productDto) {
-        Product addedProduct = productService.addProduct(productDto);
-        return new ResponseEntity<>(addedProduct, HttpStatus.CREATED);
+    public ResponseEntity<UserProducts> addProduct(@RequestBody RequestProductDto requestProductDto) {
+        UserProducts addedUserProducts = productService.addProduct(requestProductDto);
+        return new ResponseEntity<>(addedUserProducts, HttpStatus.CREATED);
     }
 
     @PostMapping("/updatePrice/{productId}")
-    public ResponseEntity<Product> updateLimitPrice(@PathVariable double price, @RequestBody Product product) {
-        Product updatedProduct = productService.updatePrice(price, product);
-        if (updatedProduct != null) {
-            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    public ResponseEntity<UserProducts> updateLimitPrice(@RequestParam double price,
+                                                         @RequestParam String userEmail,
+                                                         @RequestParam String productUrl) {
+        UserProducts updatedUserProducts = productService.updatePrice(price, userEmail, productUrl);
+        if (updatedUserProducts != null) {
+            return new ResponseEntity<>(updatedUserProducts, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -62,8 +60,8 @@ public class ProductController {
 
     @PostMapping("/delete/{email}")
     public ResponseEntity<?> updateEmail(@RequestParam String url, @PathVariable String email) {
-        Product product = productRepository.findByUserEmailAndProductUrl(email,url);
-        productRepository.delete(product);
+        UserProducts userProducts = userProductRepository.findByUserEmailAndProductUrlUrl(email,url);
+        userProductRepository.delete(userProducts);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

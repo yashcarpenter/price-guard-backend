@@ -34,5 +34,9 @@ public class User {
 
     @ElementCollection
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Product> products;
+    private List<UserProducts> userProducts;
+
+    public User(String userEmail) {
+        this.email = userEmail;
+    }
 }

@@ -3,6 +3,7 @@ package com.priceguard.workflows.controller;
 import com.priceguard.core.entities.User;
 import com.priceguard.core.repository.UserRepository;
 import com.priceguard.workflows.dto.UserDto;
+import com.priceguard.workflows.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/getUser/{email}")
     public User getUser(@PathVariable String email){
         return userRepository.findByEmail(email).orElse(null);
@@ -29,28 +33,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserDto userDto) {
-        try {
-            if (userRepository.findByUserName(userDto.getUserName()).isPresent()) {
-                return ResponseEntity.badRequest().body("Username already exists");
-            }
-
-            if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-                return ResponseEntity.badRequest().body("Email already exists");
-            }
-
-            User user = new User();
-            user.setUserName(userDto.getUserName());
-            user.setName(userDto.getFirstName() + " " + userDto.getLastName());
-            user.setMobileNumber(userDto.getMobileNumber());
-            user.setEmail(userDto.getEmail());
-            user.setPassword(userDto.getPassword());
-
-            userRepository.save(user);
-
-            return ResponseEntity.ok("User registered successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user");
-        }
+        return userService.createUser(userDto);
     }
 
     @PostMapping("/updateEmail")
