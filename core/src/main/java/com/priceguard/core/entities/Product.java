@@ -1,11 +1,12 @@
 package com.priceguard.core.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -13,8 +14,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Product {
     @Id
-    @Column(name = "url")
-    private String url;
+    @Column(name = "asin", unique = true)
+    private String asin;
 
     @Column(name="min_price")
     private Double minPrice;
@@ -22,7 +23,21 @@ public class Product {
     @Column(name="last_price")
     private Double lastPrice;
 
-    public Product(String url) {
-        this.url = url;
+    @Column
+    private LocalDateTime lastMinPriceAt;
+
+    @ElementCollection
+    @OneToMany(mappedBy = "asin", cascade = CascadeType.ALL)
+    private List<ProductPrice> prices;
+
+    public Product(String asin) {
+        this.asin = asin;
+    }
+
+    public Product(String asin, double minPrice, double lastPrice, LocalDateTime lastMinPriceAt) {
+        this.asin = asin;
+        this.minPrice = minPrice;
+        this.lastPrice = lastPrice;
+        this.lastMinPriceAt = lastMinPriceAt;
     }
 }

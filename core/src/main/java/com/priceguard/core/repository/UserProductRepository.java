@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface UserProductRepository extends JpaRepository<UserProducts, Long> {
 
-    public UserProducts findByUserEmailAndProductUrlUrl(String userEmail, String productUrl);
+    public UserProducts findByUserEmailAndProductAsinAsin(String userEmail, String productUrl);
+
+    public List<UserProducts> findByProductAsinAsin(String asin);
 
 }
 

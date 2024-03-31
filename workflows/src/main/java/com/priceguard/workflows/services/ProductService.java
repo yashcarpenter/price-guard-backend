@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,9 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    ProductPriceScraperService productPriceScraperService;
+
     public List<UserProducts> getAllProducts(){
         return userProductRepository.findAll();
     }
@@ -35,19 +39,21 @@ public class ProductService {
     @Transactional // Ensure all operations in this method are performed within a single transaction
     public UserProducts addProduct(RequestProductDto requestProductDto) {
         User user = userRepository.findByEmail(requestProductDto.getUserEmail()).orElse(null);
-        String url = requestProductDto.getUrl();
-        if (url != null && !url.isEmpty() && user != null) {
+        String asin = requestProductDto.getProductAsin();
+        if (asin != null && !asin.isEmpty() && user != null) {
             // Check if the product already exists
-            Product product = productRepository.findById(url).orElse(null);
+            Product product = productRepository.findById(asin).orElse(null);
             if (product == null) {
-                Product newProduct = new Product(url,500.00,500.00);
+                double minPrice = productPriceScraperService.getPrice(asin);
+                Product newProduct = new Product(asin,minPrice,minPrice, LocalDateTime.now());
                 product = productRepository.save(newProduct);
             }
             UserProducts userProducts = new UserProducts();
             userProducts.setUser(user);
-            userProducts.setProductUrl(product);
+            userProducts.setProductAsin(product);
             userProducts.setProductName(requestProductDto.getProductName());
             userProducts.setLimitPrice(requestProductDto.getLimitPrice());
+            userProducts.setAddedAt(LocalDateTime.now());
             return userProductRepository.save(userProducts);
         }
         return null;
@@ -62,17 +68,19 @@ public class ProductService {
                 ResponseProductDto responseProductDto = new ResponseProductDto();
                 responseProductDto.setProductName(userProduct.getProductName());
                 responseProductDto.setLimitPrice(userProduct.getLimitPrice());
-                responseProductDto.setLastPrice(userProduct.getProductUrl().getLastPrice()); // Assuming you have a getLastPrice() method in your Product entity
-                responseProductDto.setProductUrl(userProduct.getProductUrl().getUrl());
-                responseProductDto.setMinPrice(userProduct.getProductUrl().getMinPrice());
+                responseProductDto.setLastPrice(userProduct.getProductAsin().getLastPrice());
+                responseProductDto.setProductAsin(userProduct.getProductAsin().getAsin());
+                responseProductDto.setMinPrice(userProduct.getProductAsin().getMinPrice());
+                responseProductDto.setProductAddedAt(userProduct.getAddedAt());
+                responseProductDto.setLastMinPriceAt(userProduct.getProductAsin().getLastMinPriceAt());
                 responseProductDtos.add(responseProductDto);
             }
         }
         return responseProductDtos;
     }
 
-    public UserProducts updatePrice(double price,String userEmail,String productUrl) {
-        UserProducts existingUserProducts = userProductRepository.findByUserEmailAndProductUrlUrl(userEmail, productUrl);
+    public UserProducts updatePrice(double price,String userEmail,String productAsin) {
+        UserProducts existingUserProducts = userProductRepository.findByUserEmailAndProductAsinAsin(userEmail, productAsin);
         if (existingUserProducts != null) {
             existingUserProducts.setLimitPrice(price);
             return userProductRepository.save(existingUserProducts);
@@ -80,10 +88,14 @@ public class ProductService {
         return null;
     }
 
-    public void deleteProduct(String userEmail, String productUrl){
-        UserProducts userProducts = userProductRepository.findByUserEmailAndProductUrlUrl(userEmail, productUrl);
+    public void deleteProduct(String userEmail, String productAsin){
+        UserProducts userProducts = userProductRepository.findByUserEmailAndProductAsinAsin(userEmail, productAsin);
+        List<UserProducts> userProductsList= userProductRepository.findByProductAsinAsin(productAsin);
         if (userProducts != null) {
             userProductRepository.delete(userProducts);
+        }
+        if(userProductsList.size() == 1){
+            productRepository.deleteById(productAsin);
         }
     }
 }

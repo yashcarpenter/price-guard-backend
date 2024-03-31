@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestProductDto {
-    private String url;
+    private String productAsin;
     private String productName;
     private double limitPrice;
     private String userEmail;
