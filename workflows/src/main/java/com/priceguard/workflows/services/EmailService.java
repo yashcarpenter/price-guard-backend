@@ -18,10 +18,10 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendEmail() {
+    public void sendEmail(String to, String Price, String productName) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("yashcarpenter2@gmail.com");
-        message.setTo("Biaorayashcarpenter@gmail.com");
+        message.setTo(to);
         message.setSubject("Aur beta?");
         message.setText("Kya haal hai munna?");
 
