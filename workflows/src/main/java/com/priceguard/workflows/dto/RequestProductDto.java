@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
-    private String url;
+public class RequestProductDto {
+    private String productAsin;
     private String productName;
     private double limitPrice;
     private String userEmail;

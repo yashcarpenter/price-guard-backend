@@ -26,7 +26,7 @@ public class User {
     @Column(name="mobile_number" )
     private String mobileNumber;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
@@ -34,5 +34,9 @@ public class User {
 
     @ElementCollection
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Product> products;
+    private List<UserProducts> userProducts;
+
+    public User(String userEmail) {
+        this.email = userEmail;
+    }
 }

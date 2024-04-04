@@ -2,7 +2,8 @@ package com.priceguard.workflows.controller;
 
 import com.priceguard.core.entities.User;
 import com.priceguard.core.repository.UserRepository;
-import com.priceguard.workflows.services.PriceScraperService;
+import com.priceguard.workflows.services.ProductPriceScraperService;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class LoginController {
     UserRepository userRepository;
 
     @Autowired
-    private PriceScraperService priceScraperService;
+    private ProductPriceScraperService productPriceScraperService;
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestParam String email, @RequestParam String password) {
@@ -46,10 +47,4 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User does not exist");
         }
     }
-
-    @GetMapping("/get-price")
-    public void getPrice() throws IOException {
-        priceScraperService.run();
-    }
-
 }
