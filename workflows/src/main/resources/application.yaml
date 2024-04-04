@@ -20,6 +20,20 @@ spring:
   h2:
     console:
       enabled: true
+  spring:
+    mail:
+      host: smtp-relay.brevo.com
+      port: 587
+      username: yashcarpenter2@gmail.com
+      password: 7BhSItZ95yAd0j1w
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+#              required: true
+
 management:
   endpoints:
     web:

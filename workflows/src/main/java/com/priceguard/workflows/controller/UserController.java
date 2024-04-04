@@ -1,8 +1,12 @@
 package com.priceguard.workflows.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.nylas.models.NylasApiError;
+import com.nylas.models.NylasSdkTimeoutError;
 import com.priceguard.core.entities.User;
 import com.priceguard.core.repository.UserRepository;
 import com.priceguard.workflows.dto.UserDto;
+import com.priceguard.workflows.services.EmailService;
 import com.priceguard.workflows.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/getUser/{email}")
     public User getUser(@PathVariable String email){
@@ -66,6 +73,11 @@ public class UserController {
         User newUser = foundUser.get();
         newUser.setUserName(newUserName);
         return ResponseEntity.ok(userRepository.save(newUser));
+    }
+
+    @GetMapping("/sendEmail")
+    public void sendEmail()  {
+        emailService.sendEmail();
     }
 }
 

@@ -74,37 +74,3 @@ public class ProductPriceScraperService {
     }
 }
 
-//public class ProductPriceScraperService {
-//
-//    public void run() {
-//        String username = "yashcccc";
-//        String password = "Oxylabs_yash00";
-//        String url = "https://realtime.oxylabs.io/v1/queries";
-//
-//        // Create RestTemplate instance
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        // Create request headers with Basic Authentication
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBasicAuth(username, password);
-//
-//        // Create request body
-//        String requestBody = "{\"source\": \"amazon_pricing\", \"query\": \"B0BK1KS6ZD\", \"parse\": true, \"domain\": \"in\"}";
-//
-//        // Create HTTP entity with headers and body
-//        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-//
-//        // Make the POST request
-//        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-//
-//        // Handle the response
-//        if (response.getStatusCode() == HttpStatus.OK) {
-//            String responseBody = response.getBody();
-//            System.out.println("Response: " + responseBody);
-//        } else {
-//            System.out.println("Request failed with status code: " + response.getStatusCodeValue());
-//        }
-//    }
-//}
-
