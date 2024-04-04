@@ -75,9 +75,9 @@ public class UserController {
         return ResponseEntity.ok(userRepository.save(newUser));
     }
 
-//    @GetMapping("/sendEmail")
-//    public void sendEmail()  {
-//        emailService.sendEmail();
-//    }
+    @GetMapping("/sendEmail")
+    public void sendEmail()  {
+        emailService.sendEmail("biaorayashcarpenter@gmail.com", 100.00, "iPhone 15 Pro");
+    }
 }
 
