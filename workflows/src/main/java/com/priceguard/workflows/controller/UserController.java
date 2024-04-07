@@ -76,8 +76,8 @@ public class UserController {
     }
 
     @GetMapping("/sendEmail")
-    public void sendEmail()  {
-        emailService.sendEmail();
+    public void sendEmail(@RequestParam String to, @RequestParam Double price, @RequestParam String productName)  {
+        emailService.sendEmail(to, price, productName);
     }
 }
 
