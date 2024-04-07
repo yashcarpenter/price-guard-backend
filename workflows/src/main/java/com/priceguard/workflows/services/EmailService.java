@@ -2,33 +2,11 @@ package com.priceguard.workflows.services;
 
 import org.springframework.stereotype.Service;
 
-import com.nylas.NylasClient;
-import com.nylas.models.*;
-import java.util.ArrayList;
-import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.stereotype.Service;
 
-//@Service
-//public class EmailService {
-//
-//    @Autowired
-//    private JavaMailSender javaMailSender;
-//
-//    public void sendEmail(String to, Double Price, String productName) {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom("yashcarpenter2@gmail.com");
-//        message.setTo(to);
-//        message.setSubject("Price-Guard: Product Price Dropped Down");
-//        message.setText("Kya haal hai munna?");
-//
-//        javaMailSender.send(message);
-//        System.out.println("Email sent successfully!");
-//    }
-//}
 @Service
 public class EmailService {
 
