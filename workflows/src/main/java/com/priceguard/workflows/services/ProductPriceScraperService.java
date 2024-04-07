@@ -10,8 +10,8 @@ import java.io.IOException;
 @Service
 public class ProductPriceScraperService {
     private static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String USERNAME = "yashcccc";
-    public static final String PASSWORD = "Oxylabs_yash00";
+    public static final String USERNAME = "yash_gs";
+    public static final String PASSWORD = "Yash_sgsits00";
 
     public double getPrice(String asin) {
         JSONObject jsonObject = new JSONObject();
