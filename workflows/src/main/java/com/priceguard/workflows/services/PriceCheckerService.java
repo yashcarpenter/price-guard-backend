@@ -34,7 +34,7 @@ public class PriceCheckerService {
     @Autowired
     private ProductPriceScraperService productPriceScraperService;
 
-//    @Scheduled(fixedRate = 20000)
+//    @Scheduled(fixedRate = 36000000)
     private void fetchPricesFromDatabase() {
         List<Product> products = productRepository.findAll();
 

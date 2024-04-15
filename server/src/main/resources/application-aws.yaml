@@ -1,0 +1,40 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:mysql://price-guard-db.cf4c0ug4qt13.us-east-1.rds.amazonaws.com/priceguard
+    username: admin
+    password: CU5Q2MCWQiuchVLeDZGy
+    driverClassName: com.mysql.cj.jdbc.Driver
+  main:
+    allow-circular-references: true
+    jpa:
+      generate-ddl: true
+      hibernate:
+        ddl-auto: update
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.MySQLDialect
+            format_sql: true
+      show-sql: true
+    h2:
+      console:
+        enabled: true
+    spring:
+      mail:
+        host: smtp-relay.brevo.com
+        port: 587
+        username: yashcarpenter2@gmail.com
+        password: 7BhSItZ95yAd0j1w
+        properties:
+          mail:
+            smtp:
+              auth: true
+              starttls:
+                enable: true
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
