@@ -9,15 +9,14 @@ import com.priceguard.core.repository.UserProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class PriceCheckerService {
-    private static final Logger logger = LoggerFactory.getLogger(PriceCheckerService.class);
+public class CronJob {
+    private static final Logger logger = LoggerFactory.getLogger(CronJob.class);
 
     @Autowired
     private ProductRepository productRepository;
