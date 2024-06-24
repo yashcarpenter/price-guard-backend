@@ -2,7 +2,7 @@ package com.priceguard.workflows.services;
 
 import com.priceguard.core.entities.User;
 import com.priceguard.core.repository.UserRepository;
-import com.priceguard.workflows.dto.LoginRequestDto;
+import com.priceguard.workflows.dto.RegistrationRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,22 +13,22 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public ResponseEntity<String> createUser(LoginRequestDto loginRequestDto){
+    public ResponseEntity<String> createUser(RegistrationRequestDto registrationRequestDto){
         try {
-            if (userRepository.findByUserName(loginRequestDto.getUserName()).isPresent()) {
+            if (userRepository.findByUserName(registrationRequestDto.getUserName()).isPresent()) {
                 return ResponseEntity.badRequest().body("Username already exists");
             }
 
-            if (userRepository.findByEmail(loginRequestDto.getEmail()).isPresent()) {
+            if (userRepository.findByEmail(registrationRequestDto.getEmail()).isPresent()) {
                 return ResponseEntity.badRequest().body("Email already exists");
             }
 
             User user = new User();
-            user.setUserName(loginRequestDto.getUserName());
-            user.setName(loginRequestDto.getFirstName() + " " + loginRequestDto.getLastName());
-            user.setMobileNumber(loginRequestDto.getMobileNumber());
-            user.setEmail(loginRequestDto.getEmail());
-            user.setPassword(loginRequestDto.getPassword());
+            user.setUserName(registrationRequestDto.getUserName());
+            user.setName(registrationRequestDto.getFirstName() + " " + registrationRequestDto.getLastName());
+            user.setMobileNumber(registrationRequestDto.getMobileNumber());
+            user.setEmail(registrationRequestDto.getEmail());
+            user.setPassword(registrationRequestDto.getPassword());
 
             userRepository.save(user);
 

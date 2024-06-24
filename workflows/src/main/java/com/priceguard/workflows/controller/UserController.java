@@ -2,7 +2,7 @@ package com.priceguard.workflows.controller;
 
 import com.priceguard.core.entities.User;
 import com.priceguard.core.repository.UserRepository;
-import com.priceguard.workflows.dto.LoginRequestDto;
+import com.priceguard.workflows.dto.RegistrationRequestDto;
 import com.priceguard.workflows.services.EmailService;
 import com.priceguard.workflows.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody LoginRequestDto loginRequestDto) {
-        return userService.createUser(loginRequestDto);
+    public ResponseEntity<String> registerUser(@RequestBody RegistrationRequestDto registrationRequestDto) {
+        return userService.createUser(registrationRequestDto);
     }
 
     @PostMapping("/updateEmail")
