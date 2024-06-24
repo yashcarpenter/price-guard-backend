@@ -1,15 +1,11 @@
 package com.priceguard.workflows.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.nylas.models.NylasApiError;
-import com.nylas.models.NylasSdkTimeoutError;
 import com.priceguard.core.entities.User;
 import com.priceguard.core.repository.UserRepository;
-import com.priceguard.workflows.dto.UserDto;
+import com.priceguard.workflows.dto.LoginRequestDto;
 import com.priceguard.workflows.services.EmailService;
 import com.priceguard.workflows.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,8 +35,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public ResponseEntity<String> registerUser(@RequestBody LoginRequestDto loginRequestDto) {
+        return userService.createUser(loginRequestDto);
     }
 
     @PostMapping("/updateEmail")
