@@ -6,6 +6,7 @@ import com.priceguard.workflows.dto.RegistrationRequestDto;
 import com.priceguard.workflows.services.EmailService;
 import com.priceguard.workflows.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping("/register")
+    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> registerUser(@RequestBody RegistrationRequestDto registrationRequestDto) {
         return userService.createUser(registrationRequestDto);
     }
