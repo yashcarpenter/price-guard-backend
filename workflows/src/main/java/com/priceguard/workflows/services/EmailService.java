@@ -1,35 +1,33 @@
 package com.priceguard.workflows.services;
 
+import com.priceguard.core.service.GmailService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 @Service
+@Slf4j
 public class EmailService {
 
     @Autowired
-    private JavaMailSender javaMailSender;
+    private GmailService gmailService;
 
-    public void sendEmail(String to, Double price, String productName) {
-        // Construct email message
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("yashcarpenter2@gmail.com");
-        message.setTo(to);
-        message.setSubject("Price-Guard: Product Price Dropped Down");
-
-        // Customize email body with product details and price drop information
-        String emailBody = "Dear User,\n\n";
-        emailBody += "We are writing to inform you that the price of " + productName + " has dropped down.\n";
-        emailBody += "The new price is Rs." + price + ".\n\n";
-        emailBody += "Thank you for using Price-Guard.\n";
-
-        message.setText(emailBody);
-
-        // Send the email
-        javaMailSender.send(message);
-        System.out.println("Email sent successfully!");
+    public void sendEmail(String email, Double price, String productName) {
+        String subject = "Price-Guard: Product Price Dropped Down";
+        String bodyText = String.format(
+                "Dear User,\n\n" +
+                        "We are writing to inform you that the price of %s has dropped down.\n" +
+                        "The new price is Rs. %s .\n\n" +
+                        "Thank you for using Price-Guard.\n" +
+                        "- If you want to stop notifications for this Product, remove it from your Product List.\n", productName, price);
+        try {
+            gmailService.sendMessage(email, subject, bodyText);
+        } catch (MessagingException | IOException | GeneralSecurityException e) {
+            log.error("Failed to send OTP to: {}", email, e);
+        }
     }
 }

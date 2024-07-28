@@ -6,6 +6,7 @@ import com.priceguard.workflows.dto.RegistrationRequestDto;
 import com.priceguard.workflows.services.EmailService;
 import com.priceguard.workflows.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,9 +73,11 @@ public class UserController {
         return ResponseEntity.ok(userRepository.save(newUser));
     }
 
-    @GetMapping("/sendEmail")
-    public void sendEmail(@RequestParam String to, @RequestParam Double price, @RequestParam String productName)  {
+    @PostMapping("/sendemail")
+    public ResponseEntity<String> sendEmail(@RequestParam String to, @RequestParam Double price, @RequestParam String productName)  {
         emailService.sendEmail(to, price, productName);
+        return new ResponseEntity<>("Email Sent Successfully", HttpStatus.OK);
     }
+
 }
 

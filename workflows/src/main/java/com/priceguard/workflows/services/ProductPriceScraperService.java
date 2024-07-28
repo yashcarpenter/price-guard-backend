@@ -5,8 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 @Service
 public class ProductPriceScraperService {
     private static final String AUTHORIZATION_HEADER = "Authorization";
