@@ -60,8 +60,6 @@ public class ProductController {
 
     @PostMapping("/delete/{email}")
     public ResponseEntity<?> deleteProductOfaUser(@RequestParam String productAsin, @PathVariable String email) {
-//        UserProducts userProducts = userProductRepository.findByUserEmailAndProductAsinAsin(email,productAsin);
-//        userProductRepository.delete(userProducts);
         productService.deleteProduct(email, productAsin);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -17,7 +17,8 @@
 		<module>core</module>
 		<module>workflows</module>
 		<module>server</module>
-	</modules>
+        <module>onboarding</module>
+    </modules>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

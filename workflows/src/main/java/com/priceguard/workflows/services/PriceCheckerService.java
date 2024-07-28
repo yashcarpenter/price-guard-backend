@@ -6,6 +6,7 @@ import com.priceguard.core.entities.UserProducts;
 import com.priceguard.core.repository.ProductPriceRepository;
 import com.priceguard.core.repository.ProductRepository;
 import com.priceguard.core.repository.UserProductRepository;
+import com.priceguard.workflows.services.amazonpricefetchingservice.AmazonApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class PriceCheckerService {
     private EmailService emailService;
 
     @Autowired
-    private ProductPriceScraperService productPriceScraperService;
+    private AmazonApiService amazonApiService;
 
 //    @Scheduled(fixedRate = 36000000)
     private void fetchPricesFromDatabase() {
@@ -42,7 +43,7 @@ public class PriceCheckerService {
             String asin = product.getAsin();
             Double lastPrice = product.getLastPrice();
             Double minPrice = product.getMinPrice();
-            Double currentPrice = productPriceScraperService.getPrice(asin);
+            Double currentPrice = amazonApiService.getProductPrice(asin);
             List<UserProducts> userProductsList = userProductRepository.findByProductAsinAsin(asin);
 
             product.setLastPrice(currentPrice);

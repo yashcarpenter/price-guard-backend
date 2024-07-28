@@ -27,12 +27,12 @@ public class UserController {
     private EmailService emailService;
 
     @GetMapping("/getUser/{email}")
-    public User getUser(@PathVariable String email){
+    public User getUser(@PathVariable String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
 
     @GetMapping("/getall")
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @PostMapping("/sendemail")
-    public ResponseEntity<String> sendEmail(@RequestParam String to, @RequestParam Double price, @RequestParam String productName)  {
+    public ResponseEntity<String> sendEmail(@RequestParam String to, @RequestParam Double price, @RequestParam String productName) {
         emailService.sendEmail(to, price, productName);
         return new ResponseEntity<>("Email Sent Successfully", HttpStatus.OK);
     }

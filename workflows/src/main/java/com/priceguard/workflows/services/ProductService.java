@@ -6,8 +6,10 @@ import com.priceguard.core.entities.User;
 import com.priceguard.core.repository.ProductRepository;
 import com.priceguard.core.repository.UserProductRepository;
 import com.priceguard.core.repository.UserRepository;
+import com.priceguard.workflows.dto.AmazonApiResponse;
 import com.priceguard.workflows.dto.RequestProductDto;
 import com.priceguard.workflows.dto.ResponseProductDto;
+import com.priceguard.workflows.services.amazonpricefetchingservice.AmazonApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +32,7 @@ public class ProductService {
     ProductRepository productRepository;
 
     @Autowired
-    ProductPriceScraperService productPriceScraperService;
+    private AmazonApiService amazonApiService;
 
     public List<UserProducts> getAllProducts(){
         return userProductRepository.findAll();
@@ -44,7 +46,7 @@ public class ProductService {
             // Check if the product already exists
             Product product = productRepository.findById(asin).orElse(null);
             if (product == null) {
-                double minPrice = productPriceScraperService.getPrice(asin);
+                double minPrice = amazonApiService.getProductPrice(asin);
                 Product newProduct = new Product(asin,minPrice,minPrice, LocalDateTime.now());
                 product = productRepository.save(newProduct);
             }
