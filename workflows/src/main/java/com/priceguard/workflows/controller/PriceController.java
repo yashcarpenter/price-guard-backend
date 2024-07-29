@@ -1,5 +1,6 @@
 package com.priceguard.workflows.controller;
 
+import com.priceguard.core.dao.ProductPriceDao;
 import com.priceguard.core.entities.ProductPrice;
 import com.priceguard.core.repository.ProductPriceRepository;
 import com.priceguard.workflows.services.amazonpricefetchingservice.AmazonApiService;
@@ -13,7 +14,7 @@ import java.util.List;
 public class PriceController {
 
     @Autowired
-    ProductPriceRepository productPriceRepository;
+    private ProductPriceDao productPriceDao;
 
     @Autowired
     private AmazonApiService amazonApiService;
@@ -25,7 +26,7 @@ public class PriceController {
 
     @PostMapping("getprices/{asin}")
     public List<ProductPrice> getPriceOfaProduct(@PathVariable String asin){
-        return productPriceRepository.findByAsinAsin(asin);
+        return productPriceDao.findByAsinAsin(asin);
     }
 
 }

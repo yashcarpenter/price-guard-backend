@@ -9,8 +9,16 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.priceguard.onboarding</groupId>
     <artifactId>onboarding</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.priceguard</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>

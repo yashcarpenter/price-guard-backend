@@ -1,5 +1,6 @@
 package com.priceguard.workflows.controller;
 
+import com.priceguard.core.dao.UserDao;
 import com.priceguard.core.entities.User;
 import com.priceguard.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,12 @@ import java.util.Optional;
 public class LoginController {
 
     @Autowired
-    UserRepository userRepository;
+    private UserDao userDao;
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestParam String email, @RequestParam String password) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
+        User user =  userDao.findUserByEmail(email);
+        if (Objects.nonNull(user)) {
             if (Objects.equals(user.getEmail(), email)) {
                 if (Objects.equals(user.getPassword(), password)) {
                     return ResponseEntity.ok(user);

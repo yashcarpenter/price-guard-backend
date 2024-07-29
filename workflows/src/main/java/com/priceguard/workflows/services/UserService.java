@@ -1,41 +1,16 @@
 package com.priceguard.workflows.services;
 
 import com.priceguard.core.entities.User;
-import com.priceguard.core.repository.UserRepository;
-import com.priceguard.workflows.dto.RegistrationRequestDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import com.priceguard.core.util.ApiResponse;
 
-@Service
-public class UserService {
-    @Autowired
-    UserRepository userRepository;
+import java.util.List;
 
-    public ResponseEntity<String> createUser(RegistrationRequestDto registrationRequestDto){
-        try {
-            if (userRepository.findByUserName(registrationRequestDto.getUserName()).isPresent()) {
-                return ResponseEntity.badRequest().body("Username already exists");
-            }
-
-            if (userRepository.findByEmail(registrationRequestDto.getEmail()).isPresent()) {
-                return ResponseEntity.badRequest().body("Email already exists");
-            }
-
-            User user = new User();
-            user.setUserName(registrationRequestDto.getUserName());
-            user.setName(registrationRequestDto.getFirstName() + " " + registrationRequestDto.getLastName());
-            user.setMobileNumber(registrationRequestDto.getMobileNumber());
-            user.setEmail(registrationRequestDto.getEmail());
-            user.setPassword(registrationRequestDto.getPassword());
-
-            userRepository.save(user);
-
-            return ResponseEntity.ok("User registered successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user");
-        }
-    }
-
+public interface UserService {
+    public ApiResponse<User> getUser(String email);
+    public ApiResponse<List<User>> getAllUsers();
+    public ApiResponse<User> updateEmail(String newEmail, String email);
+    public ApiResponse<User> updatePassword(String newPassword, String email);
+    public ApiResponse<User> updateMobileNumber(String newMobileNumber, String email);
+    public ApiResponse<User> updateUserName(String newUserName, String email);
+    public ApiResponse<String> sendEmail(String to, Double price, String productName);
 }

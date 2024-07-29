@@ -1,24 +1,19 @@
 package com.priceguard.workflows.controller;
 
 import com.priceguard.core.entities.User;
-import com.priceguard.core.repository.UserRepository;
-import com.priceguard.workflows.dto.RegistrationRequestDto;
+import com.priceguard.core.util.ApiResponse;
 import com.priceguard.workflows.services.EmailService;
 import com.priceguard.workflows.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -26,58 +21,46 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    @GetMapping("/getUser/{email}")
-    public User getUser(@PathVariable String email) {
-        return userRepository.findByEmail(email).orElse(null);
+    @GetMapping("/getuser/{email}")
+    public ResponseEntity<ApiResponse<User>> getUser(@PathVariable String email) {
+        ApiResponse<User> response = userService.getUser(email);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    @GetMapping("/getall")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @GetMapping("/getalluser")
+    public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
+        ApiResponse<List<User>> response = userService.getAllUsers();
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> registerUser(@RequestBody RegistrationRequestDto registrationRequestDto) {
-        return userService.createUser(registrationRequestDto);
+    @PostMapping("/update/email")
+    public ResponseEntity<ApiResponse<User>> updateEmail(@RequestParam String newEmail, @RequestParam String email) {
+        ApiResponse<User> response = userService.updateEmail(newEmail, email);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    @PostMapping("/updateEmail")
-    public ResponseEntity<?> updateEmail(@RequestParam String newEmail, @RequestParam String email) {
-        Optional<User> foundUser = userRepository.findByEmail(email);
-        User newUser = foundUser.get();
-        newUser.setEmail(newEmail);
-        return ResponseEntity.ok(userRepository.save(newUser));
+    @PostMapping("/update/password")
+    public ResponseEntity<ApiResponse<User>> updatePassword(@RequestParam String newPassword, @RequestParam String email) {
+        ApiResponse<User> response = userService.updatePassword(newPassword, email);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    @PostMapping("/updatePassword")
-    public ResponseEntity<?> updatePassword(@RequestParam String newPassword, @RequestParam String email) {
-        Optional<User> foundUser = userRepository.findByEmail(email);
-        User newUser = foundUser.get();
-        newUser.setPassword(newPassword);
-        return ResponseEntity.ok(userRepository.save(newUser));
+    @PostMapping("/update/mobilenumber")
+    public ResponseEntity<ApiResponse<User>> updateMobileNumber(@RequestParam String newMobileNumber, @RequestParam String email) {
+        ApiResponse<User> response = userService.updateMobileNumber(newMobileNumber, email);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    @PostMapping("/updateMobileNumber")
-    public ResponseEntity<?> updateMobileNumber(@RequestParam String newMobileNumber, @RequestParam String email) {
-        Optional<User> foundUser = userRepository.findByEmail(email);
-        User newUser = foundUser.get();
-        newUser.setMobileNumber(newMobileNumber);
-        return ResponseEntity.ok(userRepository.save(newUser));
-    }
-
-    @PostMapping("/updateUserName")
-    public ResponseEntity<?> updateUserName(@RequestParam String newUserName, @RequestParam String email) {
-        Optional<User> foundUser = userRepository.findByEmail(email);
-        User newUser = foundUser.get();
-        newUser.setUserName(newUserName);
-        return ResponseEntity.ok(userRepository.save(newUser));
+    @PostMapping("/update/username")
+    public ResponseEntity<ApiResponse<User>> updateUserName(@RequestParam String newUserName, @RequestParam String email) {
+        ApiResponse<User> response = userService.updateUserName(newUserName, email);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
     @PostMapping("/sendemail")
-    public ResponseEntity<String> sendEmail(@RequestParam String to, @RequestParam Double price, @RequestParam String productName) {
-        emailService.sendEmail(to, price, productName);
-        return new ResponseEntity<>("Email Sent Successfully", HttpStatus.OK);
+    public ResponseEntity<ApiResponse<String>> sendEmail(@RequestParam String to, @RequestParam Double price, @RequestParam String productName) {
+        ApiResponse<String> response = userService.sendEmail(to, price, productName);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
-
 }
 

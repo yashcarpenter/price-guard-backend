@@ -1,9 +1,6 @@
 package com.priceguard.workflows.controller;
 
 import com.priceguard.core.entities.UserProducts;
-import com.priceguard.core.entities.User;
-import com.priceguard.core.repository.UserProductRepository;
-import com.priceguard.core.repository.UserRepository;
 import com.priceguard.workflows.dto.RequestProductDto;
 import com.priceguard.workflows.dto.ResponseProductDto;
 import com.priceguard.workflows.services.ProductService;
@@ -12,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/product")
@@ -22,12 +17,6 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private UserProductRepository userProductRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping("/getall")
     public ResponseEntity<List<UserProducts>> getAllProducts() {
@@ -46,11 +35,11 @@ public class ProductController {
         return new ResponseEntity<>(addedUserProducts, HttpStatus.CREATED);
     }
 
-    @PostMapping("/updatePrice/{productId}")
+    @PostMapping("/product/update/limitprice")
     public ResponseEntity<UserProducts> updateLimitPrice(@RequestParam double price,
                                                          @RequestParam String userEmail,
-                                                         @RequestParam String productUrl) {
-        UserProducts updatedUserProducts = productService.updatePrice(price, userEmail, productUrl);
+                                                         @RequestParam String asin) {
+        UserProducts updatedUserProducts = productService.updatePrice(price, userEmail, asin);
         if (updatedUserProducts != null) {
             return new ResponseEntity<>(updatedUserProducts, HttpStatus.OK);
         } else {
@@ -58,8 +47,9 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/delete/{email}")
-    public ResponseEntity<?> deleteProductOfaUser(@RequestParam String productAsin, @PathVariable String email) {
+    @PostMapping("/product/delete")
+    public ResponseEntity<?> deleteProductOfaUser(@RequestParam String productAsin,
+                                                  @RequestParam String email) {
         productService.deleteProduct(email, productAsin);
         return new ResponseEntity<>(HttpStatus.OK);
     }
