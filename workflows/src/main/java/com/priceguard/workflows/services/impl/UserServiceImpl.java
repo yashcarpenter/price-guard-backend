@@ -128,7 +128,16 @@ public class UserServiceImpl implements UserService {
     }
 
     public ApiResponse<String> sendEmail(String to, Double price, String productName) {
-        emailService.sendEmail(to, price, productName);
+        try{
+            emailService.sendEmail(to, price, productName);
+        } catch (Exception exception){
+            return ApiResponse.<String>builder()
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .message("Failed to send Email")
+                    .data(exception.getMessage())
+                    .build();
+        }
+
         return ApiResponse.<String>builder()
                 .status(HttpStatus.OK.value())
                 .message("Email sent successfully")

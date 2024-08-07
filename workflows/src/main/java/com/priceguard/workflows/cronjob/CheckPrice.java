@@ -76,6 +76,11 @@ public class CheckPrice {
     }
 
     private void sendEmail(String to, Double price, String productName) {
-        emailService.sendEmail(to, price, productName);
+        try{
+            emailService.sendEmail(to, price, productName);
+        } catch (Exception e){
+
+        }
+
     }
 }

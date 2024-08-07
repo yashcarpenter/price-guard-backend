@@ -16,7 +16,7 @@ public class EmailService {
     @Autowired
     private GmailService gmailService;
 
-    public void sendEmail(String email, Double price, String productName) {
+    public void sendEmail(String email, Double price, String productName) throws Exception{
         String subject = "Price-Guard: Product Price Dropped Down";
         String bodyText = String.format(
                 "Dear User,\n\n" +
@@ -28,6 +28,7 @@ public class EmailService {
             gmailService.sendMessage(email, subject, bodyText);
         } catch (MessagingException | IOException | GeneralSecurityException e) {
             log.error("Failed to send OTP to: {}", email, e);
+            throw e;
         }
     }
 }
