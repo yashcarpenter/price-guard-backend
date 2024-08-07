@@ -21,7 +21,7 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    @GetMapping("/getuser/{email}")
+    @GetMapping("/getdetail/{email}")
     public ResponseEntity<ApiResponse<User>> getUser(@PathVariable String email) {
         ApiResponse<User> response = userService.getUser(email);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));

@@ -76,6 +76,7 @@ public class EmailOtpServiceImpl implements EmailOtpService {
             redisTemplate.opsForValue().set(KEY_PREFIX + email, otp, otpExpirationTimeMinutes, TimeUnit.MINUTES);
             return new ApiResponse<>(HttpStatus.OK.value(), "OTP sent to " + email, null);
         } catch (MessagingException | IOException | GeneralSecurityException e) {
+            log.error("Unable to send email to {}:", email, e);
             return new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to send OTP, please try again", null);
         }
     }

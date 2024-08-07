@@ -24,7 +24,7 @@ public class ProductController {
         return new ResponseEntity<>(userProducts, HttpStatus.OK);
     }
 
-    @PostMapping("/{userEmail}")
+    @PostMapping("/get/{userEmail}")
     public List<ResponseProductDto> getProductsByUserEmail(@PathVariable String userEmail) {
         return productService.getProductDataOfUserByEmail(userEmail);
     }
@@ -35,7 +35,7 @@ public class ProductController {
         return new ResponseEntity<>(addedUserProducts, HttpStatus.CREATED);
     }
 
-    @PostMapping("/product/update/limitprice")
+    @PostMapping("/update/limitprice")
     public ResponseEntity<UserProducts> updateLimitPrice(@RequestParam double price,
                                                          @RequestParam String userEmail,
                                                          @RequestParam String asin) {
@@ -47,7 +47,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/product/delete")
+    @PostMapping("/delete")
     public ResponseEntity<?> deleteProductOfaUser(@RequestParam String productAsin,
                                                   @RequestParam String email) {
         productService.deleteProduct(email, productAsin);
