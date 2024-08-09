@@ -1,8 +1,8 @@
 package com.priceguard.workflows.controller;
 
 import com.priceguard.core.entities.UserProducts;
-import com.priceguard.workflows.dto.RequestProductDto;
-import com.priceguard.workflows.dto.ResponseProductDto;
+import com.priceguard.workflows.dto.AddProductRequestDto;
+import com.priceguard.workflows.dto.AddProductResponseDto;
 import com.priceguard.workflows.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,13 +25,13 @@ public class ProductController {
     }
 
     @PostMapping("/get/{userEmail}")
-    public List<ResponseProductDto> getProductsByUserEmail(@PathVariable String userEmail) {
+    public List<AddProductResponseDto> getProductsByUserEmail(@PathVariable String userEmail) {
         return productService.getProductDataOfUserByEmail(userEmail);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<UserProducts> addProduct(@RequestBody RequestProductDto requestProductDto) {
-        UserProducts addedUserProducts = productService.addProduct(requestProductDto);
+    public ResponseEntity<UserProducts> addProduct(@RequestBody AddProductRequestDto addProductRequestDto) {
+        UserProducts addedUserProducts = productService.addProduct(addProductRequestDto);
         return new ResponseEntity<>(addedUserProducts, HttpStatus.CREATED);
     }
 

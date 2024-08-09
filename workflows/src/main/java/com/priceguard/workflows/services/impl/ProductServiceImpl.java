@@ -6,8 +6,8 @@ import com.priceguard.core.dao.UserProductDao;
 import com.priceguard.core.entities.Product;
 import com.priceguard.core.entities.User;
 import com.priceguard.core.entities.UserProducts;
-import com.priceguard.workflows.dto.RequestProductDto;
-import com.priceguard.workflows.dto.ResponseProductDto;
+import com.priceguard.workflows.dto.AddProductRequestDto;
+import com.priceguard.workflows.dto.AddProductResponseDto;
 import com.priceguard.workflows.services.ProductService;
 import com.priceguard.workflows.services.amazonpricefetchingservice.AmazonApiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +38,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional
-    public UserProducts addProduct(RequestProductDto requestProductDto) {
-        User user = userDao.findUserByEmail(requestProductDto.getUserEmail());
-        String asin = requestProductDto.getProductAsin();
+    public UserProducts addProduct(AddProductRequestDto addProductRequestDto) {
+        User user = userDao.findUserByEmail(addProductRequestDto.getUserEmail());
+        String asin = addProductRequestDto.getProductAsin();
         if (asin!=null && !asin.isEmpty() && Objects.nonNull(user)) {
             Product product = productDao.findById(asin).orElse(null);
             if (product == null) {
@@ -51,32 +51,32 @@ public class ProductServiceImpl implements ProductService {
             UserProducts userProducts = new UserProducts();
             userProducts.setUser(user);
             userProducts.setProductAsin(product);
-            userProducts.setProductName(requestProductDto.getProductName());
-            userProducts.setLimitPrice(requestProductDto.getLimitPrice());
+            userProducts.setProductName(addProductRequestDto.getProductName());
+            userProducts.setLimitPrice(addProductRequestDto.getLimitPrice());
             userProducts.setAddedAt(LocalDateTime.now());
             return userProductDao.save(userProducts);
         }
         return null;
     }
 
-    public List<ResponseProductDto> getProductDataOfUserByEmail(String userEmail){
-        List<ResponseProductDto> responseProductDtos = new ArrayList<>();
+    public List<AddProductResponseDto> getProductDataOfUserByEmail(String userEmail){
+        List<AddProductResponseDto> addProductResponseDtos = new ArrayList<>();
         User user = userDao.findUserByEmail(userEmail);
         if (Objects.nonNull(user)) {
             List<UserProducts> userProducts = user.getUserProducts();
             for (UserProducts userProduct : userProducts) {
-                ResponseProductDto responseProductDto = new ResponseProductDto();
-                responseProductDto.setProductName(userProduct.getProductName());
-                responseProductDto.setLimitPrice(userProduct.getLimitPrice());
-                responseProductDto.setLastPrice(userProduct.getProductAsin().getLastPrice());
-                responseProductDto.setProductAsin(userProduct.getProductAsin().getAsin());
-                responseProductDto.setMinPrice(userProduct.getProductAsin().getMinPrice());
-                responseProductDto.setProductAddedAt(userProduct.getAddedAt());
-                responseProductDto.setLastMinPriceAt(userProduct.getProductAsin().getLastMinPriceAt());
-                responseProductDtos.add(responseProductDto);
+                AddProductResponseDto addProductResponseDto = new AddProductResponseDto();
+                addProductResponseDto.setProductName(userProduct.getProductName());
+                addProductResponseDto.setLimitPrice(userProduct.getLimitPrice());
+                addProductResponseDto.setLastPrice(userProduct.getProductAsin().getLastPrice());
+                addProductResponseDto.setProductAsin(userProduct.getProductAsin().getAsin());
+                addProductResponseDto.setMinPrice(userProduct.getProductAsin().getMinPrice());
+                addProductResponseDto.setProductAddedAt(userProduct.getAddedAt());
+                addProductResponseDto.setLastMinPriceAt(userProduct.getProductAsin().getLastMinPriceAt());
+                addProductResponseDtos.add(addProductResponseDto);
             }
         }
-        return responseProductDtos;
+        return addProductResponseDtos;
     }
 
     public UserProducts updatePrice(double price, String userEmail, String productAsin) {
