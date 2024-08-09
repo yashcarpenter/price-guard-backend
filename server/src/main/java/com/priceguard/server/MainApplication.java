@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.priceguard"})
+@ComponentScan(basePackages = {"com.priceguard.core","com.priceguard.onboarding", "com.priceguard.workflows"})
 @EntityScan(basePackages = {"com.priceguard.core.entities"})
 @EnableJpaRepositories(basePackages = {"com.priceguard.core.repository"})
 @EnableScheduling

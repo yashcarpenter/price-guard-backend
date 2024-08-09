@@ -11,10 +11,12 @@ import com.priceguard.workflows.services.amazonpricefetchingservice.AmazonApiSer
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 @Slf4j
 public class CheckPrice {
 
@@ -33,7 +35,7 @@ public class CheckPrice {
     @Autowired
     private AmazonApiService amazonApiService;
 
-    @Scheduled(fixedRate = 36000000)
+//    @Scheduled(fixedRate = 10000)
     private void fetchPricesFromDatabase() {
         List<Product> products = productDao.findAll();
 
@@ -79,7 +81,7 @@ public class CheckPrice {
         try{
             emailService.sendEmail(to, price, productName);
         } catch (Exception e){
-
+            log.error("Unable to send Email to {}", to, e);
         }
 
     }

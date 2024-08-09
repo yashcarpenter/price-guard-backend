@@ -36,7 +36,7 @@ public class RegistrationController {
     }
 
     @RequestMapping(value = "/verify/email/otp", method = RequestMethod.POST)
-    public ResponseEntity<ApiResponse<UserDataVerificationStatus.OtpStatus>> verifyEmailOtp(VerifyEmailOtpDto verifyEmailOtpDto){
+    public ResponseEntity<ApiResponse<UserDataVerificationStatus.OtpStatus>> verifyEmailOtp(@RequestBody VerifyEmailOtpDto verifyEmailOtpDto){
         ApiResponse<UserDataVerificationStatus.OtpStatus> status = emailOtpService.verifyEmailOtp(verifyEmailOtpDto);
         return new ResponseEntity<>(status,HttpStatus.OK);
     }

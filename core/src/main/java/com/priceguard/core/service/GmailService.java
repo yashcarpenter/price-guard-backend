@@ -78,7 +78,7 @@ public class GmailService {
         LOGGER.info("Creating email message");
         MimeMessage email = createEmail(to, "me", subject, bodyText);
         LOGGER.info("Sending email message");
-        sendMessage(getGmailService(), "me", email);
+//        sendMessage(getGmailService(), "me", email);
     }
 
     public static MimeMessage createEmail(String to, String from, String subject, String bodyText) throws MessagingException {
